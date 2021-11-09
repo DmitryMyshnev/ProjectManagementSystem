@@ -13,10 +13,8 @@ public class App {
     private static final DbStatement db = new DbStatement();
 
     public static void main(String[] args) {
-        // LOGGER.info("Start application");
-
+        System.out.println("Use command 'help' for get name of commands.");
         runMainApp();
-        // LOGGER.info("END application");
     }
 
     public static void runMainApp() {
