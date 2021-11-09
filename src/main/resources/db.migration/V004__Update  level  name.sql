@@ -1,0 +1,1 @@
+update skills set level = 'Middle' where id in(2,5,8,11);
