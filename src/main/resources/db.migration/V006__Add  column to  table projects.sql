@@ -1,1 +1,0 @@
- alter table projects add column date  varchar(30);
