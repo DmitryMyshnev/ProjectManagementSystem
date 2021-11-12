@@ -29,4 +29,9 @@ public class Company implements Identity {
     public Long getId() {
         return id;
     }
+    @Override
+    public String toString() {
+        return
+                "Name: " + name + " | " + "Quantity Employee: " + quantityEmployee ;
+    }
 }

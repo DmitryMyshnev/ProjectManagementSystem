@@ -8,7 +8,7 @@ import static ua.goIt.services.ValidatePattern.*;
 
 
 public class CustomerService implements Crud{
-    private  Customer customer;
+    private final Customer customer;
     private static CustomerDao customerDao;
 
     public CustomerService() {
@@ -19,11 +19,11 @@ public class CustomerService implements Crud{
     @Override
     public boolean isValid(String param) {
         String[] arrayParam = param.split(",");
-        if (!isValidByPattern(namePattern, arrayParam[0])) {
+        if (!isValidByPattern(NAME_PATTERN, arrayParam[0])) {
             System.out.printf((NAME_ERROR) + "%n", arrayParam[0]);
             return false;
         }
-        if (!isValidByPattern(namePattern, arrayParam[1])) {
+        if (!isValidByPattern(NAME_PATTERN, arrayParam[1])) {
             System.out.printf((NAME_ERROR) + "%n", arrayParam[1]);
             return false;
         }
@@ -31,7 +31,7 @@ public class CustomerService implements Crud{
     }
     @Override
     public void save(String arg) {
-        if (!isValidByPattern(customerSavePattern, arg)) {
+        if (!isValidByPattern(CUSTOMER_SAVE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
         }else
         if (isValid(arg)) {
@@ -43,9 +43,14 @@ public class CustomerService implements Crud{
 
     @Override
     public void update(String arg) {
-        if (!isValidByPattern(customerUpdatePattern, arg)) {
+        if (!isValidByPattern(CUSTOMER_UPDATE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
-        }else
+            return;
+        }
+        if(!isValidByPattern(DIGITAL_PATTERN,arg.split(",")[2])){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+            return;
+        }
         if (isValid(arg)) {
             prepareInstance(arg);
             getDao().update(customer);
@@ -55,9 +60,13 @@ public class CustomerService implements Crud{
 
     @Override
     public void delete(String arg) {
-        customer.setId(Long.parseLong(arg));
-        getDao().delete(customer);
-        System.out.println("Customer  was deleted.");
+        if(!isValidByPattern(DIGITAL_PATTERN,arg)){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+        }else {
+            customer.setId(Long.parseLong(arg));
+            getDao().delete(customer);
+            System.out.println("Customer  was deleted.");
+        }
     }
 
     @Override
@@ -67,7 +76,7 @@ public class CustomerService implements Crud{
 
     @Override
     public void findById(Long id) {
-        System.out.println(getDao().getById(id));
+        getDao().getById(id).ifPresent(System.out::println);
     }
 
     public static CustomerDao getDao() {
@@ -77,13 +86,12 @@ public class CustomerService implements Crud{
         return customerDao;
     }
 
-    private Customer prepareInstance(String data) {
+    private void prepareInstance(String data) {
         String[] fields = data.split(",");
         customer.setFirstName(fields[0]);
         customer.setLastName(fields[1]);
         if(fields.length == 3){
             customer.setId(Long.parseLong(fields[2]));
         }
-        return customer;
     }
 }

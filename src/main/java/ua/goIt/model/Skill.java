@@ -29,4 +29,10 @@ public class Skill implements Identity {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return
+                "Language: " + language + " | " + "Level: " + level ;
+    }
 }

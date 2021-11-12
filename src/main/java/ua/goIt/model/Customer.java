@@ -29,4 +29,9 @@ public class Customer implements Identity {
     public Long getId() {
         return id;
     }
+    @Override
+    public String toString() {
+        return
+                "First Name: " + firstName + " | " + "Last Name: " + lastName ;
+    }
 }

@@ -1,13 +1,18 @@
 package ua.goIt.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.goIt.DbStatement;
-import ua.goIt.model.Company;
 import ua.goIt.model.Skill;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SkillDao extends AbstractDao<Skill>{
+    private static final Logger LOGGER = LogManager.getLogger(SkillDao.class);
+
     @Override
     String getTableName() {
         return "skills";
@@ -33,11 +38,26 @@ public class SkillDao extends AbstractDao<Skill>{
 
     @Override
     public void update(Skill entity) {
-        String query = "update skills set language = ?, level = ? where id = ?";
+        String query = "update skills set language = ? where id = ?";
         DbStatement.executeStatementUpdate(query, ps -> {
             ps.setString(1, entity.getLanguage());
-            ps.setString(2, entity.getLevel());
-            ps.setLong(3,entity.getId());
+            ps.setLong(2,entity.getId());
         });
+    }
+    public List<Skill> findByName(String name){
+        List<Skill> list = new ArrayList<>();
+        String query = "select * from skills where language = ?";
+        try {
+            ResultSet resultSet = DbStatement.executeStatementQuery(
+                    query, ps -> ps.setString(1, name));
+            while (resultSet.next()) {
+                list.add(mapToEntity(resultSet));
+            }
+            return list;
+        } catch (SQLException e) {
+            LOGGER.info(e.getSQLState());
+            LOGGER.info(e.getMessage());
+        }
+        return list;
     }
 }

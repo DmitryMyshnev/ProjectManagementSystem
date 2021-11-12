@@ -50,7 +50,6 @@ public class DeveloperDao extends AbstractDao<Developer> {
             ps.setInt(4, user.getSalary());
             ps.setLong(5, user.getId());
         });
-        LOGGER.info("Record was updated");
     }
 
     public  List<Developer> findByName(String name){

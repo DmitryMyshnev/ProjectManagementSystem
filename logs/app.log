@@ -530,3 +530,13 @@
 2021-11-10 17:48:15,813 INFO u.g.DbStatement [main] 42601
 2021-11-10 17:48:15,822 INFO u.g.DbStatement [main] ERROR: syntax error at or near "%"
   Позиция: 15
+2021-11-12 21:19:45,292 INFO u.g.DbStatement [main] 42703
+2021-11-12 21:19:45,301 INFO u.g.DbStatement [main] ERROR: column "language" does not exist
+  Позиция: 32
+2021-11-12 21:56:54,882 INFO u.g.DbStatement [main] 42703
+2021-11-12 21:56:54,890 INFO u.g.DbStatement [main] ERROR: column "language" does not exist
+  Позиция: 32
+2021-11-12 21:59:23,494 INFO u.g.DbStatement [main] 42703
+2021-11-12 21:59:23,501 INFO u.g.DbStatement [main] ERROR: column "language" does not exist
+  Позиция: 32
+2021-11-12 22:20:27,167 INFO u.g.d.DeveloperDao [main] Record was updated

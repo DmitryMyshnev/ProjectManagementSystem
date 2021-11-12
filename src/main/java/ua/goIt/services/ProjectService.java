@@ -3,12 +3,15 @@ package ua.goIt.services;
 
 import ua.goIt.dao.ProjectDao;
 import ua.goIt.model.Project;
+
+import java.text.SimpleDateFormat;
+
 import static ua.goIt.services.ValidatePattern.*;
 import static ua.goIt.services.Validate.*;
 
 public class ProjectService implements Crud{
     private static ProjectDao projectDao;
-    private  Project project;
+    private final Project project;
 
     public ProjectService() {
         project = new Project();
@@ -19,16 +22,16 @@ public class ProjectService implements Crud{
     public boolean isValid(String param) {
         String[] arrayParam = param.split(",");
 
-       if(!isValidByPattern(namePattern,arrayParam[0])){
+       if(!isValidByPattern(NAME_PATTERN,arrayParam[0])){
            System.out.printf((NAME_ERROR) + "%n", arrayParam[0]);
            return false;
        }
-       if(!isValidByPattern(digitalPattern,arrayParam[2])){
+       if(!isValidByPattern(DIGITAL_PATTERN,arrayParam[2])){
            System.out.printf((DIGITAL_ERROR) + "%n",arrayParam[2]);
            return false;
        }
        if(arrayParam.length == 4){
-           if(!isValidByPattern(digitalPattern,arrayParam[3])){
+           if(!isValidByPattern(DIGITAL_PATTERN,arrayParam[3])){
                System.out.printf((DIGITAL_ERROR) + "%n",arrayParam[3]);
                return false;
            }
@@ -38,31 +41,43 @@ public class ProjectService implements Crud{
 
     @Override
     public void save(String arg) {
-        if (!isValidByPattern(projectSavePattern, arg)) {
+        if (!isValidByPattern(PROJECT_SAVE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
         }else
         if (isValid(arg)) {
-            projectDao.create(prepareInstance(arg));
+            project.setDate(new SimpleDateFormat("d.M.yyyy").format(System.currentTimeMillis()));
+            prepareInstance(arg);
+            projectDao.create(project);
             System.out.println("Project '" + project.getName() + "' was added.");
         }
     }
 
     @Override
     public void update(String arg) {
-        if (!isValidByPattern(projectUpdatePattern, arg)) {
+        if (!isValidByPattern(PROJECT_UPDATE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
-        }else
+            return;
+        }
+        if (!isValidByPattern(DIGITAL_PATTERN,arg.split(",")[3])){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+            return;
+        }
         if (isValid(arg)) {
-            projectDao.update(prepareInstance(arg));
+            prepareInstance(arg);
+            projectDao.update(project);
             System.out.println("Project '" + project.getName() + "' was updated.");
         }
     }
 
     @Override
     public void delete(String arg) {
-        project.setId(Long.parseLong(arg));
-        getDao().delete(project);
-        System.out.println("Project was deleted.");
+        if(!isValidByPattern(DIGITAL_PATTERN,arg)){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+        }else {
+            project.setId(Long.parseLong(arg));
+            getDao().delete(project);
+            System.out.println("Project was deleted.");
+        }
     }
 
     @Override
@@ -72,7 +87,7 @@ public class ProjectService implements Crud{
 
     @Override
     public void findById(Long id) {
-        System.out.println(getDao().getById(id));
+        getDao().getById(id).ifPresent(System.out::println);
     }
 
     public static ProjectDao getDao() {
@@ -82,7 +97,7 @@ public class ProjectService implements Crud{
         return projectDao;
     }
 
-    private Project prepareInstance(String data) {
+    private void prepareInstance(String data) {
         String[] fields = data.split(",");
         project.setName(fields[0]);
         project.setDescription(fields[1]);
@@ -90,6 +105,5 @@ public class ProjectService implements Crud{
         if(fields.length == 4){
             project.setId(Long.parseLong(fields[3]));
         }
-        return project;
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import static ua.goIt.services.Validate.*;
 
 public class DeveloperService implements Crud {
-    private  Developer developer;
+    private final Developer developer;
     private static DeveloperDao developerDao;
 
     public DeveloperService() {
@@ -19,19 +19,19 @@ public class DeveloperService implements Crud {
     public boolean isValid(String param) {
         String[] arrayParam = param.split(",");
 
-        if (!isValidByPattern(namePattern, arrayParam[0])) {
+        if (!isValidByPattern(NAME_PATTERN, arrayParam[0])) {
             System.out.printf((NAME_ERROR) + "%n", arrayParam[0]);
             return false;
         }
-        if (!isValidByPattern(agePattern, arrayParam[1])) {
+        if (!isValidByPattern(AGE_PATTERN, arrayParam[1])) {
             System.out.printf((AGE_ERROR) + "%n", arrayParam[1]);
             return false;
         }
-        if (!isValidByPattern(genderPattern, arrayParam[2])) {
+        if (!isValidByPattern(GENDER_PATTERN, arrayParam[2])) {
             System.out.printf((GENDER_ERROR) + "%n", arrayParam[2]);
             return false;
         }
-        if (!isValidByPattern(digitalPattern, arrayParam[3])) {
+        if (!isValidByPattern(DIGITAL_PATTERN, arrayParam[3])) {
             System.out.printf((DIGITAL_ERROR) + "%n", arrayParam[3]);
             return false;
         } else
@@ -40,7 +40,7 @@ public class DeveloperService implements Crud {
 
     @Override
     public void save(String arg) {
-        if (!isValidByPattern(developerSavePattern, arg)) {
+        if (!isValidByPattern(DEVELOPER_SAVE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
         }else
         if (isValid(arg)) {
@@ -52,9 +52,14 @@ public class DeveloperService implements Crud {
 
     @Override
     public void update(String arg) {
-        if (!isValidByPattern(developerUpdatePattern, arg)) {
+        if (!isValidByPattern(DEVELOPER_UPDATE_PATTERN, arg)) {
             System.out.println(TEMPLATE_ERROR);
-        }else
+            return;
+        }
+        if(!isValidByPattern(DIGITAL_PATTERN,arg.split(",")[4])){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+            return;
+        }
         if (isValid(arg)) {
             prepareInstance(arg);
             getDao().update(developer);
@@ -64,14 +69,18 @@ public class DeveloperService implements Crud {
 
     @Override
     public void delete(String arg) {
+        if(!isValidByPattern(DIGITAL_PATTERN,arg)){
+            System.out.printf((DIGITAL_ERROR) + "%n",arg);
+        }else {
             developer.setId(Long.parseLong(arg));
             getDao().delete(developer);
             System.out.println("Developer was deleted.");
+        }
     }
 
     @Override
     public void findById(Long id) {
-        System.out.println(getDao().getById(id));
+        getDao().getById(id).ifPresent(System.out::println);
     }
 
     @Override
@@ -102,7 +111,7 @@ public class DeveloperService implements Crud {
         return developerDao;
     }
 
-    private Developer prepareInstance(String data) {
+    private void prepareInstance(String data) {
         String[] fields = data.split(",");
         developer.setName(fields[0]);
         developer.setAge(Integer.parseInt(fields[1]));
@@ -111,6 +120,5 @@ public class DeveloperService implements Crud {
         if(fields.length == 5){
             developer.setId(Long.parseLong(fields[4]));
         }
-        return developer;
     }
 }
