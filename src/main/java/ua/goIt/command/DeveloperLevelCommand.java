@@ -9,10 +9,10 @@ public class DeveloperLevelCommand implements Command{
 
 
     @Override
-    public void execute(String param) {
-        List<Developer> devList = DeveloperService.getDeveloperLevel(param.split(" ")[0]);
+    public void execute(String... param) {
+        List<Developer> devList = DeveloperService.getDeveloperLevel(param[1].split(" ")[0]);
         if (devList.isEmpty()) {
-            System.out.println("No such  level '" + param + "'. Or developers does not have level '" + param + "'.");
+            System.out.println("No such  level '" + param[1] + "'. Or developers does not have level '" + param[1] + "'.");
         } else {
             devList.forEach(dev -> {
                 System.out.println(dev.toString());

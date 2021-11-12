@@ -19,7 +19,7 @@ public class DeveloperDao extends AbstractDao<Developer> {
     }
 
     @Override
-    Developer mapToEntity(ResultSet resultSet) throws SQLException {
+    Developer  mapToEntity(ResultSet resultSet) throws SQLException {
         Developer dev = new Developer();
         dev.setId(resultSet.getLong("id"));
         dev.setName(resultSet.getString("name"));
@@ -53,10 +53,26 @@ public class DeveloperDao extends AbstractDao<Developer> {
         LOGGER.info("Record was updated");
     }
 
+    public  List<Developer> findByName(String name){
+        List<Developer> list = new ArrayList<>();
+        String query = "select * from developers where name = ?";
+        try {
+            ResultSet resultSet = DbStatement.executeStatementQuery(
+                    query, ps -> ps.setString(1, name));
+            while (resultSet.next()) {
+                list.add(mapToEntity(resultSet));
+            }
+            return list;
+        } catch (SQLException e) {
+            LOGGER.info(e.getSQLState());
+            LOGGER.info(e.getMessage());
+        }
+        return list;
+    }
     public Integer getAllSalaryByProject(String projectName) {
-        String query = "select sum(salary) as total from developers as d\n" +
-                "  join developer_project as dxp on d.id = dxp.developer_id\n" +
-                "  join projects as p on p.id = dxp. project_id\n" +
+        String query = "select sum(salary) as total from developers as d" +
+                "  join developer_project as dxp on d.id = dxp.developer_id" +
+                "  join projects as p on p.id = dxp. project_id" +
                 "  where p.id = (select id from projects where project_name = ?);";
         try {
             ResultSet resultSet = DbStatement.executeStatementQuery(
@@ -91,8 +107,8 @@ public class DeveloperDao extends AbstractDao<Developer> {
     }
     public List<Developer> getDeveloperBySkills(String skillsName){
         List<Developer> list = new ArrayList<>();
-        String query = " select * from developers  where id in(" +
-                " select developer_id from developer_skills  where skils_id in (" +
+        String query = "select * from developers  where id in(" +
+                " select developer_id from developer_skills  where skills_id in (" +
                 " select id from skills where language = ?));";
         try {
             ResultSet resultSet = DbStatement.executeStatementQuery(
@@ -110,7 +126,7 @@ public class DeveloperDao extends AbstractDao<Developer> {
     public List<Developer> getDeveloperByLevel(String level){
         List<Developer> list = new ArrayList<>();
         String query = " select * from developers  where id in(" +
-                " select developer_id from developer_skills  where skils_id in (" +
+                " select developer_id from developer_skills  where skills_id in (" +
                 " select id from skills where level = ?));";
         try {
             ResultSet resultSet = DbStatement.executeStatementQuery(

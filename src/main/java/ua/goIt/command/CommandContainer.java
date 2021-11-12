@@ -1,6 +1,7 @@
 package ua.goIt.command;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommandContainer {
@@ -8,14 +9,20 @@ public class CommandContainer {
     private final UnknownCommand unknownCommand;
 
     public CommandContainer() {
-        this.commandMap = Map.of(
-                "migration", new MigrationCommand(),
-                "allSalary", new AllSalaryCommand(),
-                "allDevFromPrj", new AllUseDeveloperCommand(),
-                "devSkills", new DeveloperSkillsCommand(),
-                "devLevel", new DeveloperLevelCommand(),
-                "allProjects", new AllProjectsCommand(),
-                "help", new HelpCommand());
+        CrudCommand crudCommand = new CrudCommand();
+        this.commandMap = new HashMap<>();
+        commandMap.put("migration", new MigrationCommand());
+        commandMap.put( "all_salary", new AllSalaryCommand());
+        commandMap.put("all_devFromPrj", new AllUseDeveloperCommand());
+        commandMap.put("dev_skills", new DeveloperSkillsCommand());
+        commandMap.put( "dev_level", new DeveloperLevelCommand());
+        commandMap.put("all_projects", new AllProjectsCommand());
+        commandMap.put("help", new HelpCommand());
+        commandMap.put( "create",crudCommand);
+        commandMap.put("update",crudCommand);
+        commandMap.put("delete",crudCommand);
+        commandMap.put("read",crudCommand);
+
         unknownCommand = new UnknownCommand();
     }
 

@@ -507,3 +507,26 @@
 2021-11-10 12:12:57,788 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "006 - Add  data 'cost'  to  table projects"
 2021-11-10 12:12:57,820 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "007 - Update  column 'date' from  table projects"
 2021-11-10 12:12:57,840 INFO o.f.c.i.c.DbMigrate [main] Successfully applied 7 migrations to schema "public", now at version v007 (execution time 00:00.301s)
+2021-11-10 12:22:05,120 INFO u.g.DbStatement [main] 42703
+2021-11-10 12:22:05,122 INFO u.g.DbStatement [main] ERROR: column "skils_id" does not exist
+  Подсказка: Perhaps you meant to reference the column "developer_skills.skills_id".
+  Позиция: 90
+2021-11-10 15:50:00,789 INFO u.g.DbStatement [main] 23505
+2021-11-10 15:50:00,791 INFO u.g.DbStatement [main] ERROR: duplicate key value violates unique constraint "developers_pkey"
+  Подробности: Key (id)=(1) already exists.
+2021-11-10 16:41:49,675 INFO o.f.c.i.l.VersionPrinter [main] Flyway Community Edition 8.0.3 by Redgate
+2021-11-10 16:41:49,676 INFO o.f.c.i.d.b.BaseDatabaseType [main] Database: jdbc:postgresql://localhost:5432/postgres (PostgreSQL 14.0)
+2021-11-10 16:41:49,730 INFO o.f.c.i.c.DbValidate [main] Successfully validated 7 migrations (execution time 00:00.022s)
+2021-11-10 16:41:49,748 INFO o.f.c.i.s.JdbcTableSchemaHistory [main] Creating Schema History table "public"."flyway_schema_history" ...
+2021-11-10 16:41:49,800 INFO o.f.c.i.c.DbMigrate [main] Current version of schema "public": << Empty Schema >>
+2021-11-10 16:41:49,814 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "001 - Create all tables"
+2021-11-10 16:41:49,884 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "002 - init tables"
+2021-11-10 16:41:49,920 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "003 - Update table name"
+2021-11-10 16:41:49,948 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "004 - Add  column 'cost' to  table projects"
+2021-11-10 16:41:49,969 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "005 - Add  column to  table projects"
+2021-11-10 16:41:49,993 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "006 - Add  data 'cost'  to  table projects"
+2021-11-10 16:41:50,020 INFO o.f.c.i.c.DbMigrate [main] Migrating schema "public" to version "007 - Update  column 'date' from  table projects"
+2021-11-10 16:41:50,042 INFO o.f.c.i.c.DbMigrate [main] Successfully applied 7 migrations to schema "public", now at version v007 (execution time 00:00.249s)
+2021-11-10 17:48:15,813 INFO u.g.DbStatement [main] 42601
+2021-11-10 17:48:15,822 INFO u.g.DbStatement [main] ERROR: syntax error at or near "%"
+  Позиция: 15

@@ -19,17 +19,19 @@ public class App {
 
     public static void runMainApp() {
         Scanner scanner = new Scanner(System.in);
+        String entity;
         String arg;
         String command;
         while (scanner.hasNext()) {
             String[] data = scanner.nextLine().split(":");
-            command = data[0];
+            command = data[0].trim().split(" ")[0].trim().toLowerCase();
+            entity =  data[0].split(" ").length > 1? data[0].trim().split(" ")[1] : "";
             if (data.length > 1) {
-                arg = data[1];
+                arg = data[1].trim();
             } else {
                 arg = "";
             }
-            commandContainer.retrieveCommand(command).execute(arg);
+            commandContainer.retrieveCommand(command).execute(command,entity,arg);
         }
     }
 }

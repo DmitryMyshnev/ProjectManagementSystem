@@ -8,8 +8,8 @@ import java.util.List;
 public class DeveloperSkillsCommand implements Command {
 
     @Override
-    public void execute(String param) {
-        List<Developer> devList = DeveloperService.getDeveloperSkill(param.split(" ")[0]);
+    public void execute(String... param) {
+        List<Developer> devList = DeveloperService.getDeveloperSkill(param[1].split(" ")[0]);
         if (devList.isEmpty()) {
             System.out.println("No such data!");
         } else {

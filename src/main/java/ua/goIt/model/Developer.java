@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Developer implements Identity {
+public class Developer  implements Identity {
     private Long id;
     private String name;
     private Integer age;
@@ -45,7 +45,7 @@ public class Developer implements Identity {
         return
                 "Name: " + name + " | " +
                         "Age: " + age + " | " +
-                        "Sex: " + sex + " | " +
+                        "Gender: " + sex + " | " +
                         "Salary: " + salary;
     }
 }

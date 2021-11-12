@@ -27,6 +27,6 @@ public class Skill implements Identity {
 
     @Override
     public Long getId() {
-        return null;
+        return id;
     }
 }

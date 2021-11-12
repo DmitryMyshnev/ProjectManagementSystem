@@ -41,6 +41,23 @@ public class Project implements Identity {
 
     @Override
     public Long getId() {
-        return null;
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        String message;
+        if (cost != null) {
+            message = "Name: " + name + " | " +
+                    "Description: " + description + " | " +
+                    "Cost: " + cost + " | " +
+                    "Date: " + date;
+            return message;
+        }else {
+            message = "Name: " + name + " | " +
+                    "Description: " + description + " | " +
+                    "Date: " + date;
+        }
+        return message;
     }
 }

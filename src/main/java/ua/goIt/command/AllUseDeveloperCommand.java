@@ -10,8 +10,8 @@ public class AllUseDeveloperCommand implements Command{
 
 
     @Override
-    public void execute(String param) {
-      List<Developer> devList = DeveloperService.getAllDeveloperFromProject(param);
+    public void execute(String... param) {
+      List<Developer> devList = DeveloperService.getAllDeveloperFromProject(param[1]);
          if(devList.isEmpty()){
              System.out.println("No such  project '" + param + "'. Or '" + param + "' does not have developers.");
          }else {
