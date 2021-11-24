@@ -2,6 +2,10 @@ package ua.goIt.services;
 
 import ua.goIt.dao.CustomerDao;
 import ua.goIt.model.Customer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 import static ua.goIt.services.Validate.*;
 import static ua.goIt.services.ValidatePattern.*;
@@ -16,8 +20,8 @@ public class CustomerService implements Crud{
         customerDao = new CustomerDao();
     }
 
-    @Override
-    public boolean isValid(String param) {
+
+    private boolean isValid(String param) {
         String[] arrayParam = param.split(",");
         if (!isValidByPattern(NAME_PATTERN, arrayParam[0])) {
             System.out.printf((NAME_ERROR) + "%n", arrayParam[0]);
@@ -70,13 +74,20 @@ public class CustomerService implements Crud{
     }
 
     @Override
-    public void getAll() {
-        getDao().getAll().forEach(System.out::println);
+    public List<Object> getAll() {
+        List<Customer> all = getDao().getAll();
+        all.forEach(System.out::println);
+        return new ArrayList<>(all);
     }
 
     @Override
-    public void findById(Long id) {
-        getDao().getById(id).ifPresent(System.out::println);
+    public Optional<Object> findById(Long id) {
+        Optional<Customer> customer = getDao().getById(id);
+        customer.ifPresent(System.out::println);
+        if (customer.isEmpty()) {
+            return Optional.empty();
+        } else
+            return Optional.of(customer.get());
     }
 
     public static CustomerDao getDao() {

@@ -3,8 +3,11 @@ package ua.goIt.services;
 
 import ua.goIt.dao.ProjectDao;
 import ua.goIt.model.Project;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 import static ua.goIt.services.ValidatePattern.*;
 import static ua.goIt.services.Validate.*;
@@ -18,8 +21,8 @@ public class ProjectService implements Crud{
         projectDao = new ProjectDao();
     }
 
-    @Override
-    public boolean isValid(String param) {
+
+    private boolean isValid(String param) {
         String[] arrayParam = param.split(",");
 
        if(!isValidByPattern(NAME_PATTERN,arrayParam[0])){
@@ -81,13 +84,20 @@ public class ProjectService implements Crud{
     }
 
     @Override
-    public void getAll() {
-        getDao().getAll().forEach(System.out::println);
+    public List<Object> getAll() {
+        List<Project> all = getDao().getAll();
+        all.forEach(System.out::println);
+        return new ArrayList<>(all);
     }
 
     @Override
-    public void findById(Long id) {
-        getDao().getById(id).ifPresent(System.out::println);
+    public Optional<Object> findById(Long id) {
+        Optional<Project> project = getDao().getById(id);
+        project.ifPresent(System.out::println);
+        if (project.isEmpty()) {
+            return Optional.empty();
+        } else
+            return Optional.of(project.get());
     }
 
     public static ProjectDao getDao() {

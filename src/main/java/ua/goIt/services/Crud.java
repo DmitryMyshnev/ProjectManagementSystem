@@ -1,6 +1,9 @@
 package ua.goIt.services;
 
 
+import java.util.List;
+import java.util.Optional;
+
 public interface Crud {
     void save(String arg);
 
@@ -8,10 +11,8 @@ public interface Crud {
 
     void delete(String arg);
 
-    boolean isValid(String param);
+    List<Object> getAll();
 
-   void getAll();
-
-   void findById(Long id);
+    Optional<Object> findById(Long id);
 
 }

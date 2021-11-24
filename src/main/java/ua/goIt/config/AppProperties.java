@@ -10,9 +10,10 @@ public class AppProperties {
     private Properties properties;
 
     private AppProperties() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         this.properties = new Properties();
         try {
-            properties.load(new FileInputStream("src/main/resources/application.properties"));
+            properties.load(classLoader.getResourceAsStream("application.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,7 +10,7 @@ public class ServiceContainer {
 
     private ServiceContainer() {
         entityMap = Map.of(
-                "developer", new DeveloperService(),
+                "developer",  DeveloperService.getInstance(),
                 "project",new ProjectService(),
                 "customer",new CustomerService(),
                 "company",new CompanyService(),

@@ -3,6 +3,11 @@ package ua.goIt.services;
 import ua.goIt.dao.SkillDao;
 import ua.goIt.model.Skill;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+
 import static ua.goIt.services.Validate.*;
 import static ua.goIt.services.ValidatePattern.*;
 
@@ -15,8 +20,7 @@ public class SkillsService implements Crud {
         skillDao = new SkillDao();
     }
 
-    @Override
-    public boolean isValid(String param) {
+    private boolean isValid(String param) {
         if (!isValidByPattern(NAME_PATTERN,param)) {
             System.out.printf((NAME_ERROR) + "%n", param);
             return false;
@@ -77,13 +81,20 @@ public class SkillsService implements Crud {
 
 
     @Override
-    public void getAll() {
-        getDao().getAll().forEach(System.out::println);
+    public List<Object> getAll() {
+        List<Skill> all = getDao().getAll();
+        all.forEach(System.out::println);
+        return new ArrayList<>(all);
     }
 
     @Override
-    public void findById(Long id) {
-        getDao().getById(id).ifPresent(System.out::println);
+    public Optional<Object> findById(Long id) {
+        Optional<Skill> skill = getDao().getById(id);
+        skill.ifPresent(System.out::println);
+        if (skill.isEmpty()) {
+            return Optional.empty();
+        } else
+            return Optional.of(skill.get());
     }
 
     public static SkillDao getDao() {

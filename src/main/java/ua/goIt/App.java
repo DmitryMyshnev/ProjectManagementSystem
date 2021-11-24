@@ -10,10 +10,10 @@ public class App {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
     private static final CommandContainer commandContainer = new CommandContainer();
-    private static final DbStatement db = new DbStatement();
 
     public static void main(String[] args) {
         System.out.println("Use command 'help' for get name of commands.");
+        DbStatement.getDbConnection();
         runMainApp();
     }
 

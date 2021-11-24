@@ -12,13 +12,7 @@ public class DbStatement {
     private static Connection connection;
     private static final Logger LOGGER = LogManager.getLogger(DbStatement.class);
 
-    public DbStatement() {
-        try {
-            connection = DataSourceHolder.getDataSource().getConnection();
-        } catch (SQLException e) {
-            LOGGER.info(e.getSQLState());
-            LOGGER.info(e.getMessage());
-        }
+    private DbStatement() {
     }
 
     public static ResultSet executeStatementQuery(String query, ParameterSetter pSetter) {
@@ -43,7 +37,17 @@ public class DbStatement {
             LOGGER.info(e.getMessage());
         }
     }
-
+    public static Connection getDbConnection(){
+            try {
+                if(connection == null){
+                connection = DataSourceHolder.getDataSource().getConnection();
+                }
+            } catch (SQLException e) {
+                LOGGER.info(e.getSQLState());
+                LOGGER.info(e.getMessage());
+            }
+      return connection;
+    }
     @FunctionalInterface
     public interface ParameterSetter {
         void set(PreparedStatement ps) throws SQLException;

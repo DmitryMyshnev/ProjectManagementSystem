@@ -3,20 +3,26 @@ package ua.goIt.services;
 import ua.goIt.dao.DeveloperDao;
 import ua.goIt.model.Developer;
 import static ua.goIt.services.ValidatePattern.*;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+
 import static ua.goIt.services.Validate.*;
 
 public class DeveloperService implements Crud {
     private final Developer developer;
     private static DeveloperDao developerDao;
+    private  static DeveloperService developerService;
 
-    public DeveloperService() {
+    private DeveloperService() {
         developer = new Developer();
         developerDao = new DeveloperDao();
     }
 
-    @Override
-    public boolean isValid(String param) {
+
+    private boolean isValid(String param) {
         String[] arrayParam = param.split(",");
 
         if (!isValidByPattern(NAME_PATTERN, arrayParam[0])) {
@@ -60,7 +66,7 @@ public class DeveloperService implements Crud {
             System.out.printf((DIGITAL_ERROR) + "%n",arg);
             return;
         }
-        if (isValid(arg)) {
+       if (isValid(arg)) {
             prepareInstance(arg);
             getDao().update(developer);
             System.out.println("Developer '" + developer.getName() + "' was updated.");
@@ -79,13 +85,21 @@ public class DeveloperService implements Crud {
     }
 
     @Override
-    public void findById(Long id) {
-        getDao().getById(id).ifPresent(System.out::println);
+    public Optional<Object> findById(Long id) {
+        Optional<Developer> developer = getDao().getById(id);
+        developer.ifPresent(System.out::println);
+        if (developer.isEmpty()) {
+            return Optional.empty();
+        } else
+            return Optional.of(developer.get());
+
     }
 
     @Override
-    public void getAll() {
-     getDao().getAll().forEach(System.out::println);
+    public List<Object> getAll() {
+        List<Developer> all = getDao().getAll();
+        all.forEach(System.out::println);
+        return new ArrayList<>(all);
     }
 
     public static Integer getAllSalary(String projectName) {
@@ -104,13 +118,18 @@ public class DeveloperService implements Crud {
         return getDao().getDeveloperByLevel(level);
     }
 
-    public static DeveloperDao getDao() {
+    private static DeveloperDao getDao() {
         if (developerDao == null) {
             developerDao = new DeveloperDao();
         }
         return developerDao;
     }
-
+   public static DeveloperService getInstance(){
+        if(developerService == null){
+            developerService = new DeveloperService();
+        }
+        return developerService;
+   }
     private void prepareInstance(String data) {
         String[] fields = data.split(",");
         developer.setName(fields[0]);

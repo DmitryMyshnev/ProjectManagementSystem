@@ -14,7 +14,6 @@ public class DataSourceHolder {
     private DataSourceHolder() {
         Properties props = AppProperties.getProperties();
         PGSimpleDataSource dataSource = initDb(props);
-        initDb(props);
         this.dataSource = dataSource;
     }
 

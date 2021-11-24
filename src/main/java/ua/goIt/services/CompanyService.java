@@ -2,7 +2,9 @@ package ua.goIt.services;
 
 import ua.goIt.dao.CompanyDao;
 import ua.goIt.model.Company;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static ua.goIt.services.Validate.*;
 import static ua.goIt.services.ValidatePattern.*;
@@ -17,8 +19,8 @@ public class CompanyService implements Crud{
         companyDao = new CompanyDao();
     }
 
-    @Override
-    public boolean isValid(String param) {
+
+    private boolean isValid(String param) {
         String[] arrayParam = param.split(",");
         if (!isValidByPattern(NAME_PATTERN, arrayParam[0])) {
             System.out.printf((NAME_ERROR) + "%n", arrayParam[0]);
@@ -72,13 +74,20 @@ public class CompanyService implements Crud{
     }
 
     @Override
-    public void getAll() {
-        getDao().getAll().forEach(System.out::println);
+    public List<Object> getAll() {
+        List<Company> all = getDao().getAll();
+        all.forEach(System.out::println);
+        return new ArrayList<>(all);
     }
 
     @Override
-    public void findById(Long id) {
-        getDao().getById(id).ifPresent(System.out::println);
+    public Optional<Object> findById(Long id) {
+        Optional<Company> company = getDao().getById(id);
+        company.ifPresent(System.out::println);
+        if (company.isEmpty()) {
+            return Optional.empty();
+        } else
+            return Optional.of(company.get());
     }
     public static CompanyDao getDao() {
         if (companyDao == null) {
